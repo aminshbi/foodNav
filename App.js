@@ -3,10 +3,19 @@ import { StyleSheet, Text, View } from 'react-native';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo'; // To wait for loading the fonts and then start the App
 import { enableScreens } from 'react-native-screens'
+import { createStore , combineReducers } from 'redux'
+import { Provider } from 'react-redux'
 
 import MealsNavigator from './navigation/MealsNavigator' 
+import mealsReducer from './store/reducers/meals'
 
 enableScreens();
+
+const rootReducer = combineReducers({
+  meals: mealsReducer
+})
+
+const store = createStore(rootReducer);
 
 // Returns a promise
 const fetchFonts = () => {
@@ -29,15 +38,8 @@ export default function App() {
   }
 
   return (
-<MealsNavigator/>
+<Provider store={store}><MealsNavigator/></Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
